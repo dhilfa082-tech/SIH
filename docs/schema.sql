@@ -6,7 +6,7 @@
 PRAGMA foreign_keys = ON;
 
 -- 1. Farmer
-CREATE TABLE Farmer (
+CREATE TABLE IF NOT EXISTS Farmer (
     farmer_id   INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT NOT NULL,
     phone       TEXT NOT NULL UNIQUE,
@@ -15,7 +15,7 @@ CREATE TABLE Farmer (
 );
 
 -- 2. Pool  (created before Produce since Produce references it)
-CREATE TABLE Pool (
+CREATE TABLE IF NOT EXISTS Pool (
     pool_id           INTEGER PRIMARY KEY AUTOINCREMENT,
     crop_name         TEXT NOT NULL,
     total_quantity_kg REAL NOT NULL DEFAULT 0,
@@ -26,7 +26,7 @@ CREATE TABLE Pool (
 );
 
 -- 3. Produce
-CREATE TABLE Produce (
+CREATE TABLE IF NOT EXISTS Produce (
     produce_id       INTEGER PRIMARY KEY AUTOINCREMENT,
     farmer_id        INTEGER NOT NULL,
     pool_id          INTEGER,                       -- NULL until pooled
@@ -42,7 +42,7 @@ CREATE TABLE Produce (
 );
 
 -- 4. Buyer
-CREATE TABLE Buyer (
+CREATE TABLE IF NOT EXISTS Buyer (
     buyer_id            INTEGER PRIMARY KEY AUTOINCREMENT,
     buyer_name           TEXT NOT NULL,
     crop_name            TEXT NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE Buyer (
 );
 
 -- 5. Match  (core Buyer <-> Pool matching feature)
-CREATE TABLE Match (
+CREATE TABLE IF NOT EXISTS Match (
     match_id          INTEGER PRIMARY KEY AUTOINCREMENT,
     pool_id           INTEGER NOT NULL,
     buyer_id          INTEGER NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE Match (
 );
 
 -- 6. Journey Log (generic, covers produce/pool/match stages)
-CREATE TABLE JourneyLog (
+CREATE TABLE IF NOT EXISTS JourneyLog (
     journey_id      INTEGER PRIMARY KEY AUTOINCREMENT,
     ref_type        TEXT NOT NULL CHECK (ref_type IN ('produce', 'pool', 'match')),
     ref_id          INTEGER NOT NULL,
@@ -79,8 +79,8 @@ CREATE TABLE JourneyLog (
 -- ==========================
 -- Helpful indexes for matching queries
 -- ==========================
-CREATE INDEX idx_produce_pool ON Produce(pool_id);
-CREATE INDEX idx_produce_farmer ON Produce(farmer_id);
-CREATE INDEX idx_match_pool ON Match(pool_id);
-CREATE INDEX idx_match_buyer ON Match(buyer_id);
-CREATE INDEX idx_journey_ref ON JourneyLog(ref_type, ref_id);  given by claude
+CREATE INDEX IF NOT EXISTS idx_produce_pool ON Produce(pool_id);
+CREATE INDEX IF NOT EXISTS idx_produce_farmer ON Produce(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_match_pool ON Match(pool_id);
+CREATE INDEX IF NOT EXISTS idx_match_buyer ON Match(buyer_id);
+CREATE INDEX IF NOT EXISTS idx_journey_ref ON JourneyLog(ref_type, ref_id);
