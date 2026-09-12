@@ -1,1 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>AgriLink AI</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            🌱 AgriLink AI
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#farmer">Farmer</a>
+            <a href="#produce">Produce</a>
+            <a href="#pool">Pooling</a>
+            <a href="#buyer">Buyer</a>
+            <a href="#matching">Matching</a>
+            <a href="#prediction">Market Prediction</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Connecting Farmers to Better Markets
+            </h1>
+
+            <p>
+                AgriLink AI helps farmers discover better markets,
+                combine produce, connect with buyers and improve
+                price discovery.
+            </p>
+
+            <button onclick="scrollToSection('farmer')">
+                Get Started →
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FARMER ================= -->
+
+    <section id="farmer" class="section">
+
+        <h2>👨‍🌾 Farmer Registration</h2>
+
+        <div class="card">
+
+            <input
+                type="text"
+                id="farmerName"
+                placeholder="Farmer Name"
+            >
+
+            <input
+                type="text"
+                id="farmerPhone"
+                placeholder="Phone Number"
+            >
+
+            <input
+                type="text"
+                id="farmerLocation"
+                placeholder="Location"
+            >
+
+            <button onclick="registerFarmer()">
+                Register Farmer
+            </button>
+
+            <p id="farmerResult"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PRODUCE ================= -->
+
+    <section id="produce" class="section">
+
+        <h2>🍅 Produce Registration</h2>
+
+        <div class="card">
+
+            <input
+                type="number"
+                id="produceFarmerId"
+                placeholder="Farmer ID"
+            >
+
+            <input
+                type="text"
+                id="cropName"
+                placeholder="Crop Name"
+            >
+
+            <input
+                type="number"
+                id="quantity"
+                placeholder="Quantity in KG"
+            >
+
+            <input
+                type="text"
+                id="produceLocation"
+                placeholder="Location"
+            >
+
+            <input
+                type="date"
+                id="availabilityDate"
+            >
+
+            <button onclick="registerProduce()">
+                Register Produce
+            </button>
+
+            <p id="produceResult"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SMART POOLING ================= -->
+
+    <section id="pool" class="section">
+
+        <h2>🤝 Smart Farmer Pooling</h2>
+
+        <div class="card">
+
+            <input
+                type="text"
+                id="poolCrop"
+                placeholder="Crop Name"
+            >
+
+            <input
+                type="text"
+                id="poolLocation"
+                placeholder="Location"
+            >
+
+            <button onclick="createPool()">
+                Create Pool
+            </button>
+
+            <p id="poolResult"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= BUYER ================= -->
+
+    <section id="buyer" class="section">
+
+        <h2>🏢 Buyer Registration</h2>
+
+        <div class="card">
+
+            <input
+                type="text"
+                id="buyerName"
+                placeholder="Buyer Name"
+            >
+
+            <input
+                type="text"
+                id="buyerCrop"
+                placeholder="Crop Required"
+            >
+
+            <input
+                type="number"
+                id="buyerQuantity"
+                placeholder="Required Quantity (KG)"
+            >
+
+            <input
+                type="text"
+                id="buyerLocation"
+                placeholder="Location"
+            >
+
+            <select id="buyerUrgency">
+
+                <option value="low">
+                    Low Urgency
+                </option>
+
+                <option value="normal" selected>
+                    Normal Urgency
+                </option>
+
+                <option value="high">
+                    High Urgency
+                </option>
+
+            </select>
+
+            <button onclick="registerBuyer()">
+                Register Buyer
+            </button>
+
+            <p id="buyerResult"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SMART MATCHING ================= -->
+
+    <section id="matching" class="section">
+
+        <h2>🤖 AI Smart Matching</h2>
+
+        <div class="card">
+
+            <p>
+                Find suitable buyers for available farmer pools.
+            </p>
+
+            <button onclick="getMatchSuggestions()">
+                Find Smart Matches
+            </button>
+
+            <div id="matchResults"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ML MARKET PRICE PREDICTION ================= -->
+
+    <section id="prediction" class="section">
+
+        <h2>📈 AI Market Price Prediction</h2>
+
+        <div class="card">
+
+            <p>
+                Predict the expected market price using
+                historical market data and machine learning.
+            </p>
+
+            <input
+                type="number"
+                id="predictionYear"
+                placeholder="Year"
+                value="2023"
+            >
+
+            <input
+                type="number"
+                id="predictionMonth"
+                placeholder="Month (1-12)"
+                value="6"
+            >
+
+            <input
+                type="number"
+                id="predictionDay"
+                placeholder="Day"
+                value="13"
+            >
+
+            <input
+                type="number"
+                id="predictionArrival"
+                placeholder="Arrival Quantity"
+                value="40"
+            >
+
+            <input
+                type="number"
+                id="predictionMinPrice"
+                placeholder="Minimum Price"
+                value="2000"
+            >
+
+            <input
+                type="number"
+                id="predictionMaxPrice"
+                placeholder="Maximum Price"
+                value="2400"
+            >
+
+            <input
+                type="number"
+                id="predictionPreviousPrice"
+                placeholder="Previous Modal Price"
+                value="2200"
+            >
+
+            <button onclick="predictMarketPrice()">
+                🤖 Predict Market Price
+            </button>
+
+            <div id="predictionResult"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= JOURNEY ================= -->
+
+    <section id="journey" class="section">
+
+        <h2>📍 Produce Journey Tracking</h2>
+
+        <div class="card">
+
+            <input
+                type="number"
+                id="journeyId"
+                placeholder="Match ID"
+            >
+
+            <button onclick="trackJourney()">
+                Track Journey
+            </button>
+
+            <div id="journeyResults"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h3>🌱 AgriLink AI</h3>
+
+        <p>
+            Smart Produce-to-Market Network
+        </p>
+
+        <p>
+            SIH 2026 | Problem Statement 26132
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

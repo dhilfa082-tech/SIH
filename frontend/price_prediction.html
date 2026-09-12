@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriLink AI - Market Price Prediction</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f3;
+            color: #263238;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            background: white;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2e6b35;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            margin-left: 25px;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            color: #2e6b35;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 650px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2e6b35;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #2e6b35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #24572b;
+        }
+
+        #result {
+            display: none;
+            margin-top: 25px;
+            padding: 25px;
+            text-align: center;
+            background: #eaf6eb;
+            border-radius: 12px;
+        }
+
+        #price {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2e6b35;
+            margin-top: 10px;
+        }
+
+        #error {
+            margin-top: 20px;
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            🌱 AgriLink AI
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html">Farmer</a>
+            <a href="index.html">Produce</a>
+            <a href="index.html">Pooling</a>
+            <a href="index.html">Buyer</a>
+            <a href="index.html">Matching</a>
+            <a href="price_prediction.html">AI Price</a>
+        </div>
+
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="container">
+
+        <h1>🤖 AI Market Price Prediction</h1>
+
+        <p class="subtitle">
+            Predict the expected market price using historical market data and Machine Learning.
+        </p>
+
+
+        <div class="card">
+
+            <label>Year</label>
+            <input type="number" id="year" value="2023">
+
+            <label>Month</label>
+            <input type="number" id="month" value="6">
+
+            <label>Day</label>
+            <input type="number" id="day" value="13">
+
+            <label>Arrival Quantity</label>
+            <input type="number" id="arrival_quantity" value="40">
+
+            <label>Minimum Price (₹)</label>
+            <input type="number" id="min_price" value="2000">
+
+            <label>Maximum Price (₹)</label>
+            <input type="number" id="max_price" value="2400">
+
+            <label>Previous Modal Price (₹)</label>
+            <input type="number" id="previous_modal_price" value="2200">
+
+
+            <button onclick="predictPrice()">
+                🤖 Predict Market Price
+            </button>
+
+
+            <div id="result">
+
+                <h2>📈 Predicted Market Price</h2>
+
+                <div id="price">
+                    ₹0
+                </div>
+
+                <p>
+                    AI prediction based on historical market data.
+                </p>
+
+            </div>
+
+
+            <div id="error"></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        async function predictPrice() {
+
+            const errorDiv = document.getElementById("error");
+            const resultDiv = document.getElementById("result");
+
+            errorDiv.innerText = "";
+            resultDiv.style.display = "none";
+
+
+            const data = {
+
+                year: Number(document.getElementById("year").value),
+
+                month: Number(document.getElementById("month").value),
+
+                day: Number(document.getElementById("day").value),
+
+                arrival_quantity: Number(
+                    document.getElementById("arrival_quantity").value
+                ),
+
+                min_price: Number(
+                    document.getElementById("min_price").value
+                ),
+
+                max_price: Number(
+                    document.getElementById("max_price").value
+                ),
+
+                previous_modal_price: Number(
+                    document.getElementById("previous_modal_price").value
+                )
+
+            };
+
+
+            try {
+
+                const response = await fetch(
+                    "http://127.0.0.1:5000/predict-price",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(data)
+                    }
+                );
+
+
+                const result = await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.message || "Prediction failed"
+                    );
+
+                }
+
+
+                document.getElementById("price").innerText =
+                    "₹" + result.predicted_modal_price;
+
+
+                resultDiv.style.display = "block";
+
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                errorDiv.innerText =
+                    "❌ Error connecting to AI prediction system: "
+                    + error.message;
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>
