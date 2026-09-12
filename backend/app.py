@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 AgriLink AI — Complete Flask Backend + ML Price Prediction
 
@@ -932,3 +933,20 @@ if __name__ == "__main__":
         debug=True,
 
     )
+=======
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def home():
+    return {
+        "message": "Welcome to AgriLink AI",
+        "status": "Backend is running successfully"
+    }
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+>>>>>>> c11016cc2c684d672b56ed7e3ec897673fbe4862
